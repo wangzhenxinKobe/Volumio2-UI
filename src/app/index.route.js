@@ -27,30 +27,52 @@ function routerConfig ($stateProvider, $urlRouterProvider, $locationProvider, th
       resolve: {
         //NOTE this resolver init also global services like toast
         socketResolver: ($rootScope, $http, $window, socketService, ripperService, modalListenerService,
-            toastMessageService, uiSettingsService, updaterService) => {
+            toastMessageService, uiSettingsService, updaterService, $q, $timeout) => {
           let localhostApiURL = `http://${$window.location.hostname}/api`;
-          return $http.get(localhostApiURL + '/host')
-            .then((response) => {
-              console.info('IP from API', response);
-              $rootScope.initConfig = response.data;
-              const hosts = response.data;
-              const firstHostKey = Object.keys(hosts)[0];
-              socketService.hosts = hosts;
-              socketService.host = hosts[firstHostKey];
-            }, () => {
-              //Fallback socket
-              console.info('Dev mode: IP from local-config.json');
-              return $http.get('/app/local-config.json').then((response) => {
-                // const hosts = {
-                //   'host1': 'http://192.168.0.65',
-                //   'host2': 'http://192.168.0.66',
-                //   'host3': 'http://192.168.0.67'};
-                const hosts = {'devHost': response.data.localhost};
-                const firstHostKey = Object.keys(hosts)[0];
-                socketService.hosts = hosts;
-                socketService.host = hosts[firstHostKey];
-              });
+
+          let defer = $q.defer();
+          window.example.connect()
+            .then(() => {
+              $window.socket = window.frontend;
+              socketService.handleConnection();
+              if (window.frontend.backends.length) {
+                defer.resolve('connected');
+              }
+              $timeout(() => {
+                window.example.link()
+                  .then(() => {
+                    console.error('linked');
+                  });
+              }, 10);
             });
+          return defer.promise;
+
+          // return $http.get(localhostApiURL + '/host')
+          //   .then((response) => {
+          //     console.info('IP from API', response);
+          //     $rootScope.initConfig = response.data;
+          //     const hosts = response.data;
+          //     const firstHostKey = Object.keys(hosts)[0];
+          //     socketService.hosts = hosts;
+          //     socketService.host = hosts[firstHostKey];
+          //   }, () => {
+          //     if (true) {
+
+          //     } else {
+          //       //Fallback socket
+          //       console.info('Dev mode: IP from local-config.json');
+          //       return $http.get('/app/local-config.json').then((response) => {
+          //         // const hosts = {
+          //         //   'host1': 'http://192.168.0.65',
+          //         //   'host2': 'http://192.168.0.66',
+          //         //   'host3': 'http://192.168.0.67'};
+          //         const hosts = {'devHost': response.data.localhost};
+          //         const firstHostKey = Object.keys(hosts)[0];
+          //         socketService.hosts = hosts;
+          //         socketService.host = hosts[firstHostKey];
+          //       });
+          //     }
+          //   });
         }
       }
     })

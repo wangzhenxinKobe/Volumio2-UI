@@ -16,7 +16,11 @@ class SocketService {
       this.$window.socket.removeAllListeners();
     }
     this.$window.socket = io(this.host, {timeout: 500});
+    this.handleConnection();
     this.$window.socket.connect();
+  }
+
+  handleConnection() {
     this.$window.socket.on('connect_error', () => {
       this.$log.debug(`Socket connect_error for host ${this.host}`);
       this._connectToNextHost();
@@ -83,6 +87,10 @@ class SocketService {
   connect(callback) {
     this.$window.socket.on('connect', () => {
       this.$log.debug(`Socket connected to ${this.host}`);
+      callback();
+    });
+    this.$window.socket.events.on('linked', () => {
+      this.$log.error(`Socket connected to cloud`);
       callback();
     });
   }

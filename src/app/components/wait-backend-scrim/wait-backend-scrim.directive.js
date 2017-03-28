@@ -33,6 +33,7 @@ class WaitBackendScrimController {
   }
 
   registerListner() {
+    console.error('register listener');
     this.socketService.connect(() => {
       this.$log.debug('connect');
       this.hideSrcrim();
