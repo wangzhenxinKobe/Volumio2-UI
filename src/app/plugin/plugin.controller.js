@@ -1,5 +1,5 @@
 class PluginController {
-  constructor($rootScope, $scope, $stateParams, socketService, modalService, mockService, $log, $state, 
+  constructor($rootScope, $scope, $stateParams, socketService, modalService, mockService, $log, $state,
       uiSettingsService) {
     'ngInject';
     this.socketService = socketService;
@@ -89,12 +89,23 @@ class PluginController {
   }
 
   init() {
-    this.showPlugin = false;
-    this.pluginName = this.$stateParams.pluginName.replace('-', '/');
-    this.registerListner();
-    this.initService();
+    if (this.$stateParams.myVolumioPlugin) {
+      this.showPlugin = true;
+      this.pluginObj = {
+        page: {
+          label: 'My volumio'
+        },
+        sections: [{
+          coreSection: 'my-volumio'
+        }]
+      };
+    } else {
+      this.showPlugin = false;
+      this.pluginName = this.$stateParams.pluginName.replace('-', '/');
+      this.registerListner();
+      this.initService();
+    }
   }
-
 
   registerListner() {
     this.socketService.on('pushUiConfig', (data) => {

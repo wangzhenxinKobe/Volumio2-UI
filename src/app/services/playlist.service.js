@@ -7,7 +7,7 @@ class PlaylistService {
 
     this.playlists = [];
 
-    this.init();
+    // this.init();
     $rootScope.$on('socket:init', () => {
       this.init();
     });

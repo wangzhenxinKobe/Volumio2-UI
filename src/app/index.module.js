@@ -20,6 +20,7 @@ import LoggerService from './services/logger.service';
 import MockService from './mock/mock.service';
 import RipperService from './services/ripper.service';
 import UiSettingsService from './services/ui-settings.service';
+import MyVolumioService from './services/my-volumio.service';
 
 //Providers
 import ThemeManagerProvider from './services/theme-manager.provider';
@@ -95,6 +96,7 @@ import NetworkDrivesPluginController from './plugin/core-plugin/network-drives-p
 import SystemVersionPluginController from './plugin/core-plugin/system-version-plugin.controller';
 import FirmwareUploadPluginController from './plugin/core-plugin/firmware-upload-plugin.controller';
 import UiSettingsPluginController from './plugin/core-plugin/ui-settings-plugin.controller';
+import MyVolumioPluginController from './plugin/core-plugin/my-volumio-plugin.controller';
 
 
 
@@ -119,7 +121,7 @@ angular.module('volumio', [
 
   //Angular core modules
   // 'ngAnimate',
-  // 'ngCookies',
+  'ngCookies',
   'ngTouch',
   'ngSanitize'
   ])
@@ -147,6 +149,7 @@ angular.module('volumio', [
   .service('mockService', MockService)
   .service('ripperService', RipperService)
   .service('uiSettingsService', UiSettingsService)
+  .service('myVolumioService', MyVolumioService)
 
 
   .provider('themeManager', ThemeManagerProvider)
@@ -218,5 +221,6 @@ angular.module('volumio', [
   .controller('SystemVersionPluginController', SystemVersionPluginController)
   .controller('FirmwareUploadPluginController', FirmwareUploadPluginController)
   .controller('UiSettingsPluginController', UiSettingsPluginController)
+  .controller('MyVolumioPluginController', MyVolumioPluginController)
 
   ;

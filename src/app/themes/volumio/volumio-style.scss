@@ -402,6 +402,15 @@ table {
 }
 
 //Form override
+form {
+  &.ng-submitted {
+    input {
+      &.ng-invalid {
+        border-color: $theme-danger-color;
+      }
+    }
+  }
+}
 .form-control {
   border-radius: 0;
   &:focus {

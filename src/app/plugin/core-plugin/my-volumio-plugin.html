@@ -1,0 +1,162 @@
+<div id="myVolumio" ng-controller="MyVolumioPluginController as myVolumio"
+    class="panel panel-default">
+  <div ng-if="!myVolumio.isLogged" class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-music"></i>
+      <span ng-if="!myVolumio.showSignUp" translate="MY_VOLUMIO.SIGN_IN"></span>
+      <span ng-if="myVolumio.showSignUp" translate="MY_VOLUMIO.SIGN_UP"></span>
+    </h3>
+  </div>
+  <div ng-if="myVolumio.isLogged" class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-music"></i>
+      <span ng-if="!myVolumio.showSignUp" translate="MY_VOLUMIO.MANAGEMENT"></span>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <h4 ng-if="false" class="sectionDescription"></h4>
+    <div class="row">
+      <div class="col-sm-offset-8 col-sm-8 col-xs-24">
+         <form
+            novalidate
+            class="form-horizontal"
+            ng-if="!myVolumio.isLogged"
+            name="myVolumio.userForm"
+            ng-submit="myVolumio.submit()">
+          <!--{{myVolumio.userForm}}-->
+          <br>
+
+          <div ng-if="!myVolumio.resetPassword">
+            <label for="username" class="control-label">Username</label>
+            <input
+                id="username"
+                name="username"
+                type="text"
+                ng-model="myVolumio.user.username"
+                required
+                class="form-control">
+            <label for="password" class="control-label">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="text"
+                ng-model="myVolumio.user.password"
+                required
+                class="form-control">
+            <div ng-if="myVolumio.showSignUp">
+              <label for="name" class="control-label">Name</label>
+              <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  ng-model="myVolumio.user.name"
+                  class="form-control">
+            </div>
+            <br>
+
+            <div class="row">
+              <div class="col-xs-12">
+                <button
+                    type="submit"
+                    ng-if="!myVolumio.showSignUp"
+                    class="btn btn-info btn-block"
+                    title="{{'MY_VOLUMIO.SIGN_IN' | translate}}">
+                  <span translate="MY_VOLUMIO.SIGN_IN"></span>
+                </button>
+
+                <button
+                    type="submit"
+                    ng-if="myVolumio.showSignUp"
+                    class="btn btn-default btn-block"
+                    title="{{'MY_VOLUMIO.SIGN_UP' | translate}}">
+                  <span translate="MY_VOLUMIO.SIGN_UP"></span>
+                </button>
+              </div>
+
+              <div class="col-xs-12">
+                <button
+                    ng-click="myVolumio.showSignUp = true"
+                    ng-if="!myVolumio.showSignUp"
+                    type="button"
+                    class="btn btn-default btn-block"
+                    title="{{'MY_VOLUMIO.SIGN_UP' | translate}}">
+                  <span translate="MY_VOLUMIO.SIGN_UP"></span>
+                </button>
+                <button
+                    type="button"
+                    ng-if="myVolumio.showSignUp"
+                    ng-click="myVolumio.showSignUp = false"
+                    class="btn btn-warning btn-block"
+                    title="{{'COMMON.CANCEL' | translate}}">
+                  <span translate="COMMON.CANCEL"></span>
+                </button>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-xs-24 text-center">
+                <button
+                    ng-click="myVolumio.resetPassword = true"
+                    ng-if="!myVolumio.showSignUp"
+                    type="button"
+                    class="btn btn-link"
+                    title="{{'MY_VOLUMIO.FORGOT_PASSWORD' | translate}}">
+                  <span translate="MY_VOLUMIO.FORGOT_PASSWORD"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div ng-if="myVolumio.resetPassword">
+            <label for="forgotEmail" class="control-label">Email</label>
+            <input
+                id="forgotEmail"
+                name="forgotEmail"
+                type="text"
+                ng-model="myVolumio.user.forgotEmail"
+                class="form-control">
+            <br>
+            <div class="row">
+              <div class="col-xs-12">
+                <button
+                    type="submit"
+                    class="btn btn-info btn-block"
+                    title="{{'MY_VOLUMIO.RESET_PASSWORD' | translate}}">
+                  <span translate="MY_VOLUMIO.RESET_PASSWORD"></span>
+                </button>
+              </div>
+              <div class="col-xs-12">
+                <button
+                    type="button"
+                    ng-click="myVolumio.resetPassword = false"
+                    class="btn btn-warning btn-block"
+                    title="{{'COMMON.CANCEL' | translate}}">
+                  <span translate="COMMON.CANCEL"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div ng-if="myVolumio.isLogged">
+      <span translate="MY_VOLUMIO.LOGGED_AS"></span>:
+      {{myVolumio.myVolumioService.user.name}}
+      {{myVolumio.myVolumioService.user.surname}}
+      <button
+          ng-click="myVolumio.signOut()"
+          type="button"
+          class="btn btn-info pull-right"
+          title="{{'MY_VOLUMIO.SIGN_OUT' | translate}}">
+        <span translate="MY_VOLUMIO.SIGN_OUT"></span>
+        <div class="clearfix"></div>
+      </button>
+
+      <div>
+      //registered devices
+
+      </div>
+
+    </div>
+  </div>
+</div>

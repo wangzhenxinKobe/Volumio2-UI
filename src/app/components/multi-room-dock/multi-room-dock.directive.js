@@ -14,15 +14,23 @@ class MultiRoomDockDirective {
 }
 
 class MultiRoomDockController {
-  constructor($rootScope, socketService, multiRoomService, themeManager) {
+  constructor($rootScope, socketService, multiRoomService, themeManager, isUiInCloud) {
     'ngInject';
     this.socketService = socketService;
     this.multiRoomService = multiRoomService;
+    this.isUiInCloud = isUiInCloud;
   }
 
-  changeDevice(device) {
+  changeDevice(device, index) {
     if (!device.isChild && !device.isSelf) {
-      this.socketService.host = device.host;
+      // FIXME
+      console.info(device.host, this.multiRoomService.devices);
+      if (this.isUiInCloud) {
+        // console.info(this.socketService.hosts);
+        this.socketService.host = this.socketService.hosts[index];
+      } else {
+        this.socketService.host = device.host;
+      }
     }
   }
 }

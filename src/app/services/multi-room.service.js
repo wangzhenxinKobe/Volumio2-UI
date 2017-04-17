@@ -7,7 +7,7 @@ class MultiRoomService {
     // this.multiRoomDevices = mockService.get('multiRoomDevices');
     // this.$log.debug(this.multiRoomDevices);
     // this.devices = this.mapDevices(this.multiRoomDevices);
-    this.init();
+    // this.init();
     $rootScope.$on('socket:init', () => {
       this.init();
     });

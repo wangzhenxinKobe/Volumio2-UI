@@ -50,7 +50,13 @@ class UiSettingsService {
   }
 
   setLanguage() {
-    this.$translate.use(this.uiSettings.language);
+    let lang = this.uiSettings.language;
+    if (!lang) {
+      lang = navigator.language || navigator.userLanguage;
+      lang = lang.substring(0, 2);
+      lang = lang || 'en';
+    }
+    this.$translate.use(lang);
   }
 
   registerListner() {

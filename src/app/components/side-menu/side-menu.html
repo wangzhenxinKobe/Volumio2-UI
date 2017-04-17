@@ -5,7 +5,7 @@
       ng-click="sideMenu.toggleMenu()"
       class="btn btn-link"
       title="{{'COMMON.SHOW_SETTINGS' | translate}}">
-    <i class="fa fa-cog"></i>
+    {{sideMenu.myVolumioService.user.name}} <i class="fa fa-cog"></i>
   </button>
 
   <div id="menuList" role="group" ng-if="sideMenu.visible">

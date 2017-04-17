@@ -59,10 +59,12 @@ gulp.task('angularConfig', function () {
   var themeSelected = gutil.env.theme ? gutil.env.theme : 'volumio';
   var variantSelected = gutil.env.variant ? gutil.env.variant : 'volumio';
   var env = gutil.env.env ? gutil.env.env : 'dev';
-  var themeColor, constants;
+  var cloud = gutil.env.cloud ? gutil.env.cloud : false;
+  var constants;
   constants = {
     theme: themeSelected,
-    variant: variantSelected
+    variant: variantSelected,
+    isUiInCloud: cloud === 'true'
   };
 
   constants.env = env;

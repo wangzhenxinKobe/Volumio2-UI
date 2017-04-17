@@ -26,53 +26,23 @@ function routerConfig ($stateProvider, $urlRouterProvider, $locationProvider, th
       },
       resolve: {
         //NOTE this resolver init also global services like toast
-        socketResolver: ($rootScope, $http, $window, socketService, ripperService, modalListenerService,
-            toastMessageService, uiSettingsService, updaterService, $q, $timeout) => {
-          let localhostApiURL = `http://${$window.location.hostname}/api`;
+        socketResolver: (socketService, ripperService, modalListenerService, myVolumioService,
+            toastMessageService, uiSettingsService, updaterService, isUiInCloud, $state) => {
 
-          let defer = $q.defer();
-          window.example.connect()
-            .then(() => {
-              $window.socket = window.frontend;
-              socketService.handleConnection();
-              if (window.frontend.backends.length) {
-                defer.resolve('connected');
+          if (isUiInCloud) {
+            // Check if the user is logged
+            if (myVolumioService.isLogged) {
+              return socketService.initMyVolumio();
+            } else {
+              // Redirect to My volumio custom plugin page
+              uiSettingsService.setLanguage();
+              if (!~window.location.href.indexOf('plugin/my-volumio-welcome')) {
+                window.location.href = 'plugin/my-volumio-welcome';
               }
-              $timeout(() => {
-                window.example.link()
-                  .then(() => {
-                    console.error('linked');
-                  });
-              }, 10);
-            });
-          return defer.promise;
-
-          // return $http.get(localhostApiURL + '/host')
-          //   .then((response) => {
-          //     console.info('IP from API', response);
-          //     $rootScope.initConfig = response.data;
-          //     const hosts = response.data;
-          //     const firstHostKey = Object.keys(hosts)[0];
-          //     socketService.hosts = hosts;
-          //     socketService.host = hosts[firstHostKey];
-          //   }, () => {
-          //     if (true) {
-
-          //     } else {
-          //       //Fallback socket
-          //       console.info('Dev mode: IP from local-config.json');
-          //       return $http.get('/app/local-config.json').then((response) => {
-          //         // const hosts = {
-          //         //   'host1': 'http://192.168.0.65',
-          //         //   'host2': 'http://192.168.0.66',
-          //         //   'host3': 'http://192.168.0.67'};
-          //         const hosts = {'devHost': response.data.localhost};
-          //         const firstHostKey = Object.keys(hosts)[0];
-          //         socketService.hosts = hosts;
-          //         socketService.host = hosts[firstHostKey];
-          //       });
-          //     }
-          //   });
+            }
+          } else {
+            return socketService.initVolumio();
+          }
         }
       }
     })
@@ -131,6 +101,22 @@ function routerConfig ($stateProvider, $urlRouterProvider, $locationProvider, th
         }
       }
     })
+
+    .state('volumio.my-volumio-welcome', {
+      url: 'plugin/my-volumio-welcome',
+      params: {
+        isPluginSettings: null,
+        myVolumioPlugin: true
+      },
+      views: {
+        'content@volumio': {
+          templateUrl: 'app/plugin/plugin.html',
+          controller: 'PluginController',
+          controllerAs: 'plugin'
+        }
+      }
+    })
+
     .state('volumio.plugin', {
       url: 'plugin/:pluginName',
       params: {isPluginSettings: null},

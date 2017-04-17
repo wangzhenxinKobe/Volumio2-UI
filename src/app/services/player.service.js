@@ -1,5 +1,5 @@
 class PlayerService {
-  constructor($rootScope, $log, $interval, socketService, themeManager, uiSettingsService, $document) {
+  constructor($rootScope, $log, $interval, socketService, themeManager, uiSettingsService, $document, isUiInCloud) {
     'ngInject';
     this.$log = $log;
     this.$interval = $interval;
@@ -8,6 +8,7 @@ class PlayerService {
     this.$rootScope = $rootScope;
     this.uiSettingsService = uiSettingsService;
     this.$document = $document;
+    this.isUiInCloud = isUiInCloud;
 
     this.state = null;
     this.trackInfo = null;
@@ -27,7 +28,7 @@ class PlayerService {
     this._repeatTrack = false;
     this._repeatAlbum = false;
 
-    this.init();
+    // this.init();
     $rootScope.$on('socket:init', () => {
       this.init();
     });
@@ -209,7 +210,10 @@ class PlayerService {
     if (~albumart.indexOf('http')) {
       return albumart;
     } else {
-      return `${this.socketService.host}${albumart}`;
+      if (this.isUiInCloud) {
+      return `http://albumarts.volumio.org${albumart}`;
+    }
+    return `${this.socketService.host}${albumart}`;
     }
   }
 

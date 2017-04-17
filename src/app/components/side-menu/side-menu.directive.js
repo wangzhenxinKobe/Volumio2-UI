@@ -14,8 +14,8 @@ class SideMenuDirective {
 }
 
 class SideMenuController {
-  constructor($scope, $rootScope, socketService, mockService, $state, modalService, playerService, themeManager, $log, 
-      $http, $window, uiSettingsService) {
+  constructor($scope, $rootScope, socketService, mockService, $state, modalService, playerService, themeManager, $log,
+      $http, $window, uiSettingsService, myVolumioService) {
     'ngInject';
     this.$state = $state;
     this.$window = $window;
@@ -27,9 +27,10 @@ class SideMenuController {
     this.$log = $log;
     this.$scope = $scope;
     this.uiSettingsService = uiSettingsService;
+    this.myVolumioService = myVolumioService;
     // this.menuItems = mockService.get('getMenuItems');
 
-    this.init();
+    // this.init();,
     $rootScope.$on('socket:init', () => {
       this.init();
     });

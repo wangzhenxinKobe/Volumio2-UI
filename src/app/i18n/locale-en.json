@@ -182,5 +182,14 @@
   "SIDEMENU": {
     "ANALOG_INPUT": "ANALOG INPUT",
     "BLUETOOTH": "BLUETOOTH"
+  },
+  "MY_VOLUMIO": {
+    "SIGN_IN": "Sign in",
+    "SIGN_UP": "Sign up",
+    "SIGN_OUT": "Sign out",
+    "FORGOT_PASSWORD": "Forgot your passord?",
+    "RESET_PASSWORD": "Reset password",
+    "MANAGEMENT": "Cloud management",
+    "LOGGED_AS": "Loggato come"
   }
 }
